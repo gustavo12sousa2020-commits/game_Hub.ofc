@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Gamer Hub</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+<!-- LOGIN -->
+<div id="login-screen" class="admin-login">
+    <div class="login-box">
+        <div class="logo" style="justify-content:center;margin-bottom:20px;gap:10px;">
+            <span style="color:#00ff88;font-size:26px">🎮</span>
+            <span class="logo-text">Gamer Hub</span>
+        </div>
+        <h2>Painel Admin</h2>
+        <p style="color:#888;margin-bottom:24px;font-size:14px">Acesso restrito ao administrador</p>
+        <input id="login-senha" type="password" placeholder="Digite sua senha" class="admin-input" style="display:block;width:100%;margin-bottom:12px">
+        <div id="login-erro" class="admin-erro" style="display:none"></div>
+        <button onclick="fazerLogin()" class="admin-btn-primary" style="width:100%">Entrar</button>
+    </div>
+</div>
+
+<!-- PAINEL -->
+<div id="painel" style="display:none">
+
+<header class="admin-header">
+    <div class="admin-header-inner">
+        <a href="index.html" class="logo" style="gap:8px">
+            <span style="color:#00ff88;font-size:22px">🎮</span>
+            <span class="logo-text" style="font-size:20px">Gamer Hub</span>
+        </a>
+        <span style="color:#555;font-size:13px;margin-left:8px">/ Admin</span>
+        <button onclick="fazerLogout()" class="admin-btn-danger admin-btn-sm" style="margin-left:auto">Sair</button>
+    </div>
+</header>
+
+<div class="admin-container">
+
+    <!-- STATS -->
+    <div class="admin-stats" id="admin-stats">
+        <div class="stat-card"><div class="stat-valor" id="st-noticias">—</div><div class="stat-label">Notícias</div></div>
+        <div class="stat-card"><div class="stat-valor" id="st-usuarios">—</div><div class="stat-label">Usuários</div></div>
+        <div class="stat-card"><div class="stat-valor" id="st-comentarios">—</div><div class="stat-label">Comentários</div></div>
+        <div class="stat-card"><div class="stat-valor" id="st-doadores">—</div><div class="stat-label">Apoiadores</div></div>
+        <div class="stat-card"><div class="stat-valor" id="st-pix" style="color:#00ff88">—</div><div class="stat-label">Total Pix</div></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="admin-tabs">
+        <button class="admin-tab active" onclick="mudarAba('noticias',this)">📰 Notícias</button>
+        <button class="admin-tab" onclick="mudarAba('comentarios',this)">💬 Comentários</button>
+        <button class="admin-tab" onclick="mudarAba('usuarios',this)">👤 Usuários</button>
+        <button class="admin-tab" onclick="mudarAba('doadores',this)">💚 Apoiadores</button>
+        <button class="admin-tab" onclick="mudarAba('logs',this)">📋 Logs</button>
+    </div>
+
+    <!-- NOTÍCIAS -->
+    <div id="aba-noticias" class="admin-aba">
+        <div class="admin-card-header">
+            <h3>Gerenciar Notícias</h3>
+            <button onclick="carregarNoticias()" class="admin-btn-sm admin-btn-outline">↻ Atualizar</button>
+        </div>
+        <p style="color:#666;font-size:13px;margin-bottom:16px">Remover uma notícia a oculta do site para todos os visitantes.</p>
+        <input id="filtro-noticias" type="text" placeholder="Filtrar por título..." class="admin-input" style="width:100%;margin-bottom:14px" oninput="filtrarNoticias()">
+        <div id="noticias-lista"></div>
+    </div>
+
+    <!-- COMENTÁRIOS -->
+    <div id="aba-comentarios" class="admin-aba" style="display:none">
+        <div class="admin-card-header">
+            <h3>Gerenciar Comentários</h3>
+            <button onclick="carregarComentarios()" class="admin-btn-sm admin-btn-outline">↻ Atualizar</button>
+        </div>
+        <div id="comentarios-lista"></div>
+    </div>
+
+    <!-- USUÁRIOS -->
+    <div id="aba-usuarios" class="admin-aba" style="display:none">
+        <div class="admin-card-header">
+            <h3>Usuários Cadastrados</h3>
+            <button onclick="carregarUsuarios()" class="admin-btn-sm admin-btn-outline">↻ Atualizar</button>
+        </div>
+        <div id="usuarios-lista"></div>
+    </div>
+
+    <!-- DOADORES -->
+    <div id="aba-doadores" class="admin-aba" style="display:none">
+        <div class="admin-card-header">
+            <h3>Apoiadores</h3>
+            <button onclick="carregarDoadores()" class="admin-btn-sm admin-btn-outline">↻ Atualizar</button>
+        </div>
+        <div class="admin-form-row" style="margin-bottom:14px">
+            <input id="doador-nome" type="text" placeholder="Nome do apoiador" class="admin-input" style="flex:1">
+            <input id="doador-valor" type="number" placeholder="Valor R$" class="admin-input" style="width:120px">
+            <button onclick="adicionarDoador()" class="admin-btn-primary">+ Adicionar</button>
+        </div>
+        <div class="admin-hint">💡 Bronze R$5+ | Prata R$15+ | Ouro R$30+ | Diamante R$50+ | Lendário 👑 R$60+</div>
+        <div id="doadores-lista"></div>
+    </div>
+
+    <!-- LOGS -->
+    <div id="aba-logs" class="admin-aba" style="display:none">
+        <div class="admin-card-header">
+            <h3>Logs de Atividade</h3>
+            <button onclick="carregarLogs()" class="admin-btn-sm admin-btn-outline">↻ Atualizar</button>
+        </div>
+        <div id="logs-lista"></div>
+    </div>
+
+</div>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>
