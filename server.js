@@ -12,7 +12,7 @@ const bcrypt   = require("bcryptjs");
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname)));
 
 const API_KEY    = process.env.NEWS_API_KEY;
 const GNEWS_KEY  = process.env.GNEWS_API_KEY || "";
